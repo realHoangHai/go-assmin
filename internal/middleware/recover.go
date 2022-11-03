@@ -5,7 +5,7 @@ import (
 	errors "github.com/realHoangHai/go-assmin/internal/common/errors"
 )
 
-func Recover() gin.HandlerFunc {
+func (h *Handler) Recover() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {

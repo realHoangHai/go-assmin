@@ -15,7 +15,7 @@ type pasetoProvider struct {
 }
 
 // NewPasetoProvider creates a new paseto provider
-func NewPasetoProvider(symmetricKey string) tokenprovider.Provider {
+func NewPasetoProvider(symmetricKey string) tokenprovider.TokenMaker {
 	if len(symmetricKey) != chacha20poly1305.KeySize {
 		panic(fmt.Errorf("invalid key size: must be exactly %d characters", chacha20poly1305.KeySize))
 	}

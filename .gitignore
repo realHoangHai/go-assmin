@@ -30,8 +30,3 @@ dist/
 
 # Config
 .env
-
-
-# Logs
-log/
-logs/

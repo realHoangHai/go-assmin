@@ -1,0 +1,41 @@
+[Core]
+# Host
+Host = "0.0.0.0"
+# Port
+Port = "10808"
+# Environment: debug, release
+Enviroment = "debug"
+
+# Logging
+[Log]
+# Level: trace, debug, info, warn, error
+Level = "debug"
+
+[Token]
+SecretKey = "sicoritky1234567890WithPaseto999"
+
+# Redis settings
+[Redis]
+# Address
+Address = "127.0.0.1:6379"
+# Password
+Password = ""
+# Database
+Db = ""
+
+# Database settings
+[Postgres]
+# Host
+Host = "127.0.0.1"
+# Port
+Port = "5432"
+# User
+User = "postgres"
+# Password
+Password = "postgres-secret"
+# Database
+Database = "assmin"
+# SSL Mode
+SSLMode = "disable"
+# Migration
+Migration = true

@@ -11,13 +11,13 @@ import (
 
 const minSecretKeySize = 32
 
-// jwtProvider is a JSON Web Token maker
+// jwtProvider is a JSON Web TokenMaker maker
 type jwtProvider struct {
 	secretKey string
 }
 
 // NewJWTProvider creates a new jwt provider
-func NewJWTProvider(secretKey string) tokenprovider.Provider {
+func NewJWTProvider(secretKey string) tokenprovider.TokenMaker {
 	if len(secretKey) < minSecretKeySize {
 		panic(fmt.Errorf("invalid key size: must be at least %d characters", minSecretKeySize))
 	}

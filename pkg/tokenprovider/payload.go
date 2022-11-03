@@ -2,7 +2,7 @@ package tokenprovider
 
 import (
 	"github.com/google/uuid"
-	errors "github.com/realHoangHai/go-assmin/internal/common/errors"
+	"github.com/realHoangHai/go-assmin/internal/common/errors"
 	"time"
 )
 
