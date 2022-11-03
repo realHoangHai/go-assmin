@@ -1,6 +1,4 @@
 [Core]
-# Host
-Host = "0.0.0.0"
 # Port
 Port = "10808"
 # Environment: debug, release

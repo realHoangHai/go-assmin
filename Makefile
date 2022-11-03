@@ -24,7 +24,7 @@ swag.install:
 	go get github.com/swaggo/files
 
 swag.gen:
-	swag init -d ./cmd,./internal/service,./internal/model,./internal/common -g main.go --output docs/qltb
+	swag init -d ./cmd,./internal/service,./internal/model,./internal/common/response -g main.go --output docs/swagger
 
 build:
 	GOOS=linux GOARCH=amd64 go build -o bin/assmin ./cmd/

@@ -4,9 +4,12 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/realHoangHai/go-assmin/config"
+	_ "github.com/realHoangHai/go-assmin/docs/swagger"
 	"github.com/realHoangHai/go-assmin/internal/middleware"
 	"github.com/realHoangHai/go-assmin/internal/service"
 	"github.com/realHoangHai/go-assmin/pkg/log"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 type Server struct {
@@ -29,6 +32,11 @@ func (s *Server) Start() {
 	r := gin.Default()
 	r.Use(s.handler.Recover())
 
+	r.GET("/", s.service.Welcome())
+	r.POST("/api/login", s.service.Login())
+
+	swaggerURL := ginSwagger.URL(fmt.Sprintf("0.0.0.0%s/swagger/doc.json", addr)) // the  url poiting to API definition
+	r.GET("swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, swaggerURL))
 	log.Infof(fmt.Sprintf("Starting server on http://localhost%s", addr))
 
 	// start server

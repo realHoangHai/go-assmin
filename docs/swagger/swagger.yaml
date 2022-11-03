@@ -1,0 +1,29 @@
+info:
+  contact: {}
+  description: Go Assmin.
+  termsOfService: http://swagger.io/terms/
+  title: assmin
+  version: VERSION
+paths:
+  /:
+    get:
+      consumes:
+      - '*/*'
+      description: Welcome.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Homepage Go Assmin Backend Side.
+      tags:
+      - public
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

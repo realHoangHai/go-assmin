@@ -41,7 +41,7 @@ func parse() bool {
 }
 
 // @title assmin
-// @version 1.0
+// @version VERSION
 // @description Go Assmin.
 // @termsOfService http://swagger.io/terms/
 // @securityDefinitions.apikey ApiKeyAuth
