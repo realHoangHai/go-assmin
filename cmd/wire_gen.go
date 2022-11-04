@@ -27,9 +27,9 @@ func initializeServer(ctx context.Context) (*server.Server, error) {
 	if err != nil {
 		return nil, err
 	}
-	tokenMaker := token.NewTokenProvider()
+	tokenMaker := token.NewTokenMaker()
 	handler := middleware.NewHandler(ctx, iRepo, universalClient, tokenMaker)
-	serviceService := service.NewService(iRepo, handler)
+	serviceService := service.NewService(iRepo, handler, tokenMaker)
 	serverServer, err := server.NewServer(handler, serviceService)
 	if err != nil {
 		return nil, err

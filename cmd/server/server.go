@@ -29,11 +29,13 @@ func (s *Server) Start() {
 	addr := fmt.Sprintf(":%s", config.C.Core.Port)
 
 	gin.SetMode(config.C.Core.Enviroment)
-	r := gin.Default()
+	r := gin.New()
 	r.Use(s.handler.Recover())
 
 	r.GET("/", s.service.Welcome())
+	r.POST("/api/register", s.service.CreateUser())
 	r.POST("/api/login", s.service.Login())
+	r.POST("/api/renew-token", s.service.RenewToken())
 
 	swaggerURL := ginSwagger.URL(fmt.Sprintf("0.0.0.0%s/swagger/doc.json", addr)) // the  url poiting to API definition
 	r.GET("swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, swaggerURL))

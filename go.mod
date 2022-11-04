@@ -45,9 +45,12 @@ require (
 	github.com/go-openapi/swag v0.19.15 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
-	github.com/go-playground/validator/v10 v10.10.0 // indirect
+	github.com/go-playground/validator/v10 v10.11.1 // indirect
 	github.com/goccy/go-json v0.9.7 // indirect
 	github.com/google/go-cmp v0.5.8 // indirect
+	github.com/gookit/filter v1.1.3 // indirect
+	github.com/gookit/goutil v0.5.9 // indirect
+	github.com/gookit/validate v1.4.4 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/hashicorp/hcl/v2 v2.13.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect

@@ -1,7 +1,6 @@
 package request
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/google/uuid"
@@ -17,6 +16,8 @@ func GetToken(c *gin.Context) string {
 	prefix := "Bearer "
 	if header != "" && strings.HasPrefix(header, prefix) {
 		token = header[len(prefix):]
+	} else {
+		panic(errors.ErrUnauthoried)
 	}
 	return token
 }
@@ -25,7 +26,7 @@ func GetToken(c *gin.Context) string {
 func ParseUUID(c *gin.Context, key string) uuid.UUID {
 	uid, err := uuid.Parse(c.Param(key))
 	if err != nil {
-		return uuid.Nil
+		panic(errors.ErrInvalidRequest(err))
 	}
 	return uid
 }
@@ -34,23 +35,21 @@ func ParseUUID(c *gin.Context, key string) uuid.UUID {
 func ParseID(c *gin.Context, key string) uint64 {
 	id, err := strconv.ParseUint(c.Param(key), 10, 64)
 	if err != nil {
-		return 0
+		panic(errors.ErrInvalidRequest(err))
 	}
 	return id
 }
 
 // ParseJson will parse body json data to struct
-func ParseJson(c *gin.Context, v interface{}) error {
+func ParseJson(c *gin.Context, v interface{}) {
 	if err := c.ShouldBindJSON(v); err != nil {
-		return errors.ErrInvalidRequest(err, fmt.Sprintf("parse request json failed: %s", err.Error()))
+		panic(errors.ErrInvalidRequest(err))
 	}
-	return nil
 }
 
 // ParseForm will parse body form data to struct
-func ParseForm(c *gin.Context, v interface{}) error {
+func ParseForm(c *gin.Context, v interface{}) {
 	if err := c.ShouldBindWith(v, binding.Form); err != nil {
-		return errors.ErrInvalidRequest(err, fmt.Sprintf("parse request form failed: %s", err.Error()))
+		panic(errors.ErrInvalidRequest(err))
 	}
-	return nil
 }

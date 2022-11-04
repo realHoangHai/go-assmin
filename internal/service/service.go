@@ -4,17 +4,20 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/realHoangHai/go-assmin/internal/middleware"
 	"github.com/realHoangHai/go-assmin/internal/repo"
+	"github.com/realHoangHai/go-assmin/pkg/tokenprovider"
 )
 
 type Service struct {
-	repo    repo.IRepo
-	handler *middleware.Handler
+	repo          repo.IRepo
+	handler       *middleware.Handler
+	tokenprovider tokenprovider.TokenMaker
 }
 
-func NewService(repo repo.IRepo, handler *middleware.Handler) *Service {
+func NewService(repo repo.IRepo, handler *middleware.Handler, provider tokenprovider.TokenMaker) *Service {
 	return &Service{
-		repo:    repo,
-		handler: handler,
+		repo:          repo,
+		handler:       handler,
+		tokenprovider: provider,
 	}
 }
 

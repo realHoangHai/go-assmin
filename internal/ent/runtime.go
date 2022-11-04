@@ -2,8 +2,59 @@
 
 package ent
 
+import (
+	"time"
+
+	"github.com/google/uuid"
+	"github.com/realHoangHai/go-assmin/internal/ent/schema"
+	"github.com/realHoangHai/go-assmin/internal/ent/session"
+	"github.com/realHoangHai/go-assmin/internal/ent/user"
+)
+
 // The init function reads all schema descriptors with runtime code
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
+	sessionMixin := schema.Session{}.Mixin()
+	sessionMixinFields0 := sessionMixin[0].Fields()
+	_ = sessionMixinFields0
+	sessionFields := schema.Session{}.Fields()
+	_ = sessionFields
+	// sessionDescCreateTime is the schema descriptor for create_time field.
+	sessionDescCreateTime := sessionMixinFields0[1].Descriptor()
+	// session.DefaultCreateTime holds the default value on creation for the create_time field.
+	session.DefaultCreateTime = sessionDescCreateTime.Default.(func() time.Time)
+	// sessionDescUpdateTime is the schema descriptor for update_time field.
+	sessionDescUpdateTime := sessionMixinFields0[2].Descriptor()
+	// session.DefaultUpdateTime holds the default value on creation for the update_time field.
+	session.DefaultUpdateTime = sessionDescUpdateTime.Default.(func() time.Time)
+	// session.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
+	session.UpdateDefaultUpdateTime = sessionDescUpdateTime.UpdateDefault.(func() time.Time)
+	// sessionDescRefreshToken is the schema descriptor for refresh_token field.
+	sessionDescRefreshToken := sessionFields[1].Descriptor()
+	// session.RefreshTokenValidator is a validator for the "refresh_token" field. It is called by the builders before save.
+	session.RefreshTokenValidator = sessionDescRefreshToken.Validators[0].(func(string) error)
+	// sessionDescID is the schema descriptor for id field.
+	sessionDescID := sessionMixinFields0[0].Descriptor()
+	// session.DefaultID holds the default value on creation for the id field.
+	session.DefaultID = sessionDescID.Default.(func() uuid.UUID)
+	userMixin := schema.User{}.Mixin()
+	userMixinFields0 := userMixin[0].Fields()
+	_ = userMixinFields0
+	userFields := schema.User{}.Fields()
+	_ = userFields
+	// userDescCreateTime is the schema descriptor for create_time field.
+	userDescCreateTime := userMixinFields0[1].Descriptor()
+	// user.DefaultCreateTime holds the default value on creation for the create_time field.
+	user.DefaultCreateTime = userDescCreateTime.Default.(func() time.Time)
+	// userDescUpdateTime is the schema descriptor for update_time field.
+	userDescUpdateTime := userMixinFields0[2].Descriptor()
+	// user.DefaultUpdateTime holds the default value on creation for the update_time field.
+	user.DefaultUpdateTime = userDescUpdateTime.Default.(func() time.Time)
+	// user.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
+	user.UpdateDefaultUpdateTime = userDescUpdateTime.UpdateDefault.(func() time.Time)
+	// userDescID is the schema descriptor for id field.
+	userDescID := userMixinFields0[0].Descriptor()
+	// user.DefaultID holds the default value on creation for the id field.
+	user.DefaultID = userDescID.Default.(func() uuid.UUID)
 }

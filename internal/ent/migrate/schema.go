@@ -8,14 +8,33 @@ import (
 )
 
 var (
+	// SessionsColumns holds the columns for the "sessions" table.
+	SessionsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "create_time", Type: field.TypeTime},
+		{Name: "update_time", Type: field.TypeTime},
+		{Name: "user_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "refresh_token", Type: field.TypeString, Nullable: true},
+		{Name: "user_agent", Type: field.TypeString, Nullable: true},
+		{Name: "client_ip", Type: field.TypeString, Nullable: true},
+		{Name: "is_blocked", Type: field.TypeBool, Nullable: true},
+		{Name: "expire_time", Type: field.TypeTime, Nullable: true},
+	}
+	// SessionsTable holds the schema information for the "sessions" table.
+	SessionsTable = &schema.Table{
+		Name:       "sessions",
+		Columns:    SessionsColumns,
+		PrimaryKey: []*schema.Column{SessionsColumns[0]},
+	}
 	// UsersColumns holds the columns for the "users" table.
 	UsersColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "user_name", Type: field.TypeString, Nullable: true},
-		{Name: "real_name", Type: field.TypeString, Nullable: true},
+		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "create_time", Type: field.TypeTime},
+		{Name: "update_time", Type: field.TypeTime},
+		{Name: "name", Type: field.TypeString, Nullable: true},
+		{Name: "email", Type: field.TypeString, Nullable: true},
 		{Name: "password", Type: field.TypeString, Nullable: true},
 		{Name: "phone", Type: field.TypeString, Nullable: true},
-		{Name: "email", Type: field.TypeString, Nullable: true},
 		{Name: "status", Type: field.TypeInt, Nullable: true},
 	}
 	// UsersTable holds the schema information for the "users" table.
@@ -23,9 +42,17 @@ var (
 		Name:       "users",
 		Columns:    UsersColumns,
 		PrimaryKey: []*schema.Column{UsersColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "user_email",
+				Unique:  false,
+				Columns: []*schema.Column{UsersColumns[4]},
+			},
+		},
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
+		SessionsTable,
 		UsersTable,
 	}
 )

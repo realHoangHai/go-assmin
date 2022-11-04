@@ -5,8 +5,10 @@ package ent
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"github.com/google/uuid"
 	"github.com/realHoangHai/go-assmin/internal/ent/user"
 )
 
@@ -14,17 +16,19 @@ import (
 type User struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID int `json:"id,omitempty"`
-	// UserName holds the value of the "user_name" field.
-	UserName string `json:"user_name,omitempty"`
-	// RealName holds the value of the "real_name" field.
-	RealName string `json:"real_name,omitempty"`
+	ID uuid.UUID `json:"id,omitempty"`
+	// CreateTime holds the value of the "create_time" field.
+	CreateTime time.Time `json:"create_time,omitempty"`
+	// UpdateTime holds the value of the "update_time" field.
+	UpdateTime time.Time `json:"update_time,omitempty"`
+	// Name holds the value of the "name" field.
+	Name string `json:"name,omitempty"`
+	// Email holds the value of the "email" field.
+	Email string `json:"email,omitempty"`
 	// Password holds the value of the "password" field.
 	Password string `json:"password,omitempty"`
 	// Phone holds the value of the "phone" field.
 	Phone string `json:"phone,omitempty"`
-	// Email holds the value of the "email" field.
-	Email string `json:"email,omitempty"`
 	// Status holds the value of the "status" field.
 	Status int `json:"status,omitempty"`
 }
@@ -34,10 +38,14 @@ func (*User) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case user.FieldID, user.FieldStatus:
+		case user.FieldStatus:
 			values[i] = new(sql.NullInt64)
-		case user.FieldUserName, user.FieldRealName, user.FieldPassword, user.FieldPhone, user.FieldEmail:
+		case user.FieldName, user.FieldEmail, user.FieldPassword, user.FieldPhone:
 			values[i] = new(sql.NullString)
+		case user.FieldCreateTime, user.FieldUpdateTime:
+			values[i] = new(sql.NullTime)
+		case user.FieldID:
+			values[i] = new(uuid.UUID)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type User", columns[i])
 		}
@@ -54,22 +62,34 @@ func (u *User) assignValues(columns []string, values []any) error {
 	for i := range columns {
 		switch columns[i] {
 		case user.FieldID:
-			value, ok := values[i].(*sql.NullInt64)
-			if !ok {
-				return fmt.Errorf("unexpected type %T for field id", value)
+			if value, ok := values[i].(*uuid.UUID); !ok {
+				return fmt.Errorf("unexpected type %T for field id", values[i])
+			} else if value != nil {
+				u.ID = *value
 			}
-			u.ID = int(value.Int64)
-		case user.FieldUserName:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field user_name", values[i])
+		case user.FieldCreateTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field create_time", values[i])
 			} else if value.Valid {
-				u.UserName = value.String
+				u.CreateTime = value.Time
 			}
-		case user.FieldRealName:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field real_name", values[i])
+		case user.FieldUpdateTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field update_time", values[i])
 			} else if value.Valid {
-				u.RealName = value.String
+				u.UpdateTime = value.Time
+			}
+		case user.FieldName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field name", values[i])
+			} else if value.Valid {
+				u.Name = value.String
+			}
+		case user.FieldEmail:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field email", values[i])
+			} else if value.Valid {
+				u.Email = value.String
 			}
 		case user.FieldPassword:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -82,12 +102,6 @@ func (u *User) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field phone", values[i])
 			} else if value.Valid {
 				u.Phone = value.String
-			}
-		case user.FieldEmail:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field email", values[i])
-			} else if value.Valid {
-				u.Email = value.String
 			}
 		case user.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -123,20 +137,23 @@ func (u *User) String() string {
 	var builder strings.Builder
 	builder.WriteString("User(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", u.ID))
-	builder.WriteString("user_name=")
-	builder.WriteString(u.UserName)
+	builder.WriteString("create_time=")
+	builder.WriteString(u.CreateTime.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("real_name=")
-	builder.WriteString(u.RealName)
+	builder.WriteString("update_time=")
+	builder.WriteString(u.UpdateTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("name=")
+	builder.WriteString(u.Name)
+	builder.WriteString(", ")
+	builder.WriteString("email=")
+	builder.WriteString(u.Email)
 	builder.WriteString(", ")
 	builder.WriteString("password=")
 	builder.WriteString(u.Password)
 	builder.WriteString(", ")
 	builder.WriteString("phone=")
 	builder.WriteString(u.Phone)
-	builder.WriteString(", ")
-	builder.WriteString("email=")
-	builder.WriteString(u.Email)
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", u.Status))

@@ -12,12 +12,12 @@ func (h *Handler) Recover() gin.HandlerFunc {
 				c.Header("Content-Type", "application/json")
 				if appErr, ok := err.(*errors.AppError); ok {
 					c.AbortWithStatusJSON(appErr.StatusCode, appErr)
-					panic(err)
+					//panic(err)
 					return
 				}
-				appErr := errors.ErrInternal(err.(error), "something went wrong in the server")
+				appErr := errors.ErrInternal(err.(error))
 				c.AbortWithStatusJSON(appErr.StatusCode, appErr)
-				panic(err)
+				//panic(err)
 				return
 			}
 		}()

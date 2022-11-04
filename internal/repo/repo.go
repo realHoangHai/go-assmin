@@ -35,7 +35,7 @@ func NewRepo(ctx context.Context) (IRepo, error) {
 		migrate.WithDropColumn(true),
 	}
 
-	if config.C.Postgres.Mirgration {
+	if config.C.Postgres.Migration {
 		if err := client.Schema.Create(ctx, opts...); err != nil {
 			defer func() {
 				_ = client.Close()

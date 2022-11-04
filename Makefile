@@ -1,3 +1,6 @@
+docker.run:
+	docker run -d --name my-postgres -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres-secret -e POSTGRES_DB=assmin postgres:15-alpine
+
 run:
 	go run ./cmd
 
@@ -24,7 +27,7 @@ swag.install:
 	go get github.com/swaggo/files
 
 swag.gen:
-	swag init -d ./cmd,./internal/service,./internal/model,./internal/common/response -g main.go --output docs/swagger
+	swag init -d ./cmd,./internal/service,./internal/model,./internal/common/response,./internal/common/errors -g main.go --output docs/swagger
 
 build:
 	GOOS=linux GOARCH=amd64 go build -o bin/assmin ./cmd/

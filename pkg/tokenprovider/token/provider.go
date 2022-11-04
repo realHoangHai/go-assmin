@@ -8,10 +8,10 @@ import (
 )
 
 var (
-	ProviderTokenSet = wire.NewSet(NewTokenProvider)
+	ProviderTokenSet = wire.NewSet(NewTokenMaker)
 )
 
-func NewTokenProvider() tokenprovider.TokenMaker {
+func NewTokenMaker() tokenprovider.TokenMaker {
 	p := paseto.NewPasetoProvider(config.C.Token.SecretKey)
 	//p := jwt.NewJWTProvider(config.C.Token.SecretKey)
 	return p

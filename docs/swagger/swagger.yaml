@@ -1,3 +1,44 @@
+definitions:
+  errors.AppError:
+    properties:
+      error_key:
+        type: string
+      log:
+        type: string
+      message:
+        type: string
+      status_code:
+        type: integer
+    type: object
+  model.CreateUserRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+    type: object
+  model.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  model.RenewTokenRequest:
+    properties:
+      refresh_token:
+        type: string
+    type: object
+  response.Success:
+    properties:
+      data: {}
+      filter: {}
+      paging: {}
+    type: object
 info:
   contact: {}
   description: Go Assmin.
@@ -21,6 +62,96 @@ paths:
       summary: Homepage Go Assmin Backend Side.
       tags:
       - public
+  /api/login:
+    post:
+      consumes:
+      - application/json
+      description: Login.
+      parameters:
+      - description: Login request
+        in: body
+        name: users
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.AppError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errors.AppError'
+      summary: Login.
+      tags:
+      - users
+  /api/register:
+    post:
+      consumes:
+      - application/json
+      description: Create user.
+      parameters:
+      - description: Create user request
+        in: body
+        name: users
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.AppError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errors.AppError'
+      summary: Create user.
+      tags:
+      - users
+  /api/renew-token:
+    post:
+      consumes:
+      - application/json
+      description: Renew access token.
+      parameters:
+      - description: Renew access token request
+        in: body
+        name: users
+        required: true
+        schema:
+          $ref: '#/definitions/model.RenewTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.AppError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errors.AppError'
+      summary: Renew access token.
+      tags:
+      - users
 securityDefinitions:
   ApiKeyAuth:
     in: header

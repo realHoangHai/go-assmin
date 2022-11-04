@@ -69,13 +69,13 @@ type Redis struct {
 }
 
 type Postgres struct {
-	Host       string
-	Port       int
-	User       string
-	Password   string
-	Database   string
-	SSLMode    string
-	Mirgration bool
+	Host      string
+	Port      int
+	User      string
+	Password  string
+	Database  string
+	SSLMode   string
+	Migration bool
 }
 
 func (c Postgres) DSN() string {
