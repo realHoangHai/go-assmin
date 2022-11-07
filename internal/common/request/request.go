@@ -17,7 +17,7 @@ func GetToken(c *gin.Context) string {
 	if header != "" && strings.HasPrefix(header, prefix) {
 		token = header[len(prefix):]
 	} else {
-		panic(errors.ErrUnauthoried)
+		panic(errors.ErrUnauthorized)
 	}
 	return token
 }
@@ -52,4 +52,8 @@ func ParseForm(c *gin.Context, v interface{}) {
 	if err := c.ShouldBindWith(v, binding.Form); err != nil {
 		panic(errors.ErrInvalidRequest(err))
 	}
+}
+
+func Set(c *gin.Context, key string, v interface{}) {
+	c.Set(key, v)
 }

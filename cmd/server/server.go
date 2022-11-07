@@ -30,15 +30,17 @@ func (s *Server) Start() {
 
 	gin.SetMode(config.C.Core.Enviroment)
 	r := gin.New()
-	r.Use(s.handler.Recover())
+	r.NoMethod(s.handler.NoMethod())
+	r.NoRoute(s.handler.NoRoute())
 
-	r.GET("/", s.service.Welcome())
-	r.POST("/api/register", s.service.CreateUser())
-	r.POST("/api/login", s.service.Login())
-	r.POST("/api/renew-token", s.service.RenewToken())
+	//prefixes := s.Prefixes()
+	r.Use(s.handler.Recover())
+	r.Use(s.handler.Cors())
+	s.RegisterAPI(r)
 
 	swaggerURL := ginSwagger.URL(fmt.Sprintf("0.0.0.0%s/swagger/doc.json", addr)) // the  url poiting to API definition
 	r.GET("swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, swaggerURL))
+
 	log.Infof(fmt.Sprintf("Starting server on http://localhost%s", addr))
 
 	// start server
@@ -47,4 +49,23 @@ func (s *Server) Start() {
 			log.Fatalf("Could not start server: %v", err)
 		}
 	}()
+}
+
+func (s *Server) RegisterAPI(e *gin.Engine) {
+
+	g := e.Group("/api")
+	g.Use(s.handler.Authorize(
+		s.handler.IgnorePathPrefixes("/api/v1/login"),
+	))
+
+	g.Use(s.handler.LimitIP("1000-H"))
+
+	v1 := g.Group("/v1")
+	{
+		pub := v1.Group("/pub")
+		{
+			pub.POST("/login", s.service.Login())
+			pub.POST("/refresh-token", s.service.RenewToken())
+		}
+	}
 }

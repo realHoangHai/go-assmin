@@ -49,9 +49,10 @@ type Config struct {
 }
 
 type Core struct {
-	Host       string
-	Port       string
-	Enviroment string
+	Application string
+	Host        string
+	Port        string
+	Enviroment  string
 }
 
 type Log struct {

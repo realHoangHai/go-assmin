@@ -1,4 +1,6 @@
 [Core]
+# Application name
+Application = "Assmin"
 # Port
 Port = "10808"
 # Environment: debug, release

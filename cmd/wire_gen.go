@@ -9,11 +9,11 @@ package main
 import (
 	"context"
 	"github.com/realHoangHai/go-assmin/cmd/server"
+	"github.com/realHoangHai/go-assmin/internal/core"
 	"github.com/realHoangHai/go-assmin/internal/middleware"
 	"github.com/realHoangHai/go-assmin/internal/repo"
 	"github.com/realHoangHai/go-assmin/internal/service"
 	"github.com/realHoangHai/go-assmin/pkg/redis"
-	"github.com/realHoangHai/go-assmin/pkg/tokenprovider/token"
 )
 
 // Injectors from wire.go:
@@ -27,7 +27,7 @@ func initializeServer(ctx context.Context) (*server.Server, error) {
 	if err != nil {
 		return nil, err
 	}
-	tokenMaker := token.NewTokenMaker()
+	tokenMaker := core.InitTokenMaker()
 	handler := middleware.NewHandler(ctx, iRepo, universalClient, tokenMaker)
 	serviceService := service.NewService(iRepo, handler, tokenMaker)
 	serverServer, err := server.NewServer(handler, serviceService)
